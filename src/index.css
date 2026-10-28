@@ -1,0 +1,36 @@
+/* 너비와 높이에 padding, border를 포함해 크기 계산 */
+* {
+  box-sizing: border-box;
+}
+
+/* 브라우저 기본 여백 제거 및 앱 바깥 배경 설정 */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #eeeeee;
+}
+
+/* 모바일 중심의 공통 화면 틀 */
+.app-layout {
+  /* 작은 화면에서는 화면 너비에 맞춤 */
+  width: 100%;
+
+  /* 큰 화면에서는 최대 480px까지만 넓어짐 */
+  max-width: 480px;
+
+  /* 콘텐츠가 적어도 현재 화면 높이만큼 배경을 채움 */
+  min-height: 100dvh;
+
+  /* 큰 화면에서 앱을 가로 가운데에 배치 */
+  margin-inline: auto;
+
+  background: #e7e1d6;
+}
+
+/* 입력창과 버튼에도 부모 요소의 글꼴 설정 적용 */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
