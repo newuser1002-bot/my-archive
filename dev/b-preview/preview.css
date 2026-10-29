@@ -1,0 +1,10 @@
+.b-demo-bar { padding:10px 16px; font-size:11px; background:#f6e8bc; color:#574d30; display:flex; gap:9px; flex-wrap:wrap; align-items:center; }
+.b-demo-bar strong { width:100%; }
+.b-demo-bar label { display:flex; align-items:center; gap:5px; }
+.b-demo-bar button { font-size:11px; background:transparent; border:1px solid #958658; padding:4px 8px; border-radius:4px; }
+.b-demo-result { padding:24px; line-height:1.7; color:#363a31; font-size:14px; }
+.b-demo-result h1 { font-size:24px; }
+.b-demo-result h2 { font-size:16px; }
+.b-demo-result a { color:#344e2e; }
+.b-demo-result article { border-top:1px solid #b8b8a5; padding:15px 0; }
+.b-demo-result img { width:100%; max-height:300px; object-fit:contain; }

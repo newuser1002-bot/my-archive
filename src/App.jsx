@@ -12,10 +12,12 @@ import ReviewEdit from "./pages/review-edit/ReviewEdit";
 import WorkDetail from "./pages/work-detail/WorkDetail";
 import Share from "./pages/share/Share";
 import Stats from "./pages/stats/Stats";
+import ArchiveBridgeProvider from "./pages/b-shared/ArchiveBridgeProvider";
 
 function App() {
   return (
     <BrowserRouter>
+      <ArchiveBridgeProvider>
       <Layout>
         <Routes>
           {/* 홈 */}
@@ -43,6 +45,7 @@ function App() {
           <Route path="*" element={<p>페이지를 찾을 수 없습니다.</p>} />
         </Routes>
       </Layout>
+      </ArchiveBridgeProvider>
     </BrowserRouter>
   );
 }
