@@ -57,4 +57,3 @@ export default function Demo() {
     <Routes><Route path="/" element={<section className="b-demo-result"><h1>B 입력 기능 검증</h1><p>A의 공통 저장 함수가 연결되기 전 B를 독립적으로 확인하는 공간입니다.</p><Link to="/works/new">새 작품과 첫 기록 작성</Link>{data.works.map(work => <p key={work.id}><Link to={`/works/${encodeURIComponent(work.id)}`}>{work.title} 저장 결과 보기</Link></p>)}<p><Link to="/works/missing/reviews/new">없는 작품 예외 확인</Link></p><p><Link to="/reviews/missing/edit">없는 기록 예외 확인</Link></p></section>} /><Route path="/works/new" element={<WorkCreate />} /><Route path="/works/:workId/reviews/new" element={<ReviewCreate />} /><Route path="/reviews/:reviewId/edit" element={<ReviewEdit />} /><Route path="/works/:workId" element={<DemoResult data={data} />} /></Routes>
   </Layout></BArchiveContext.Provider></HashRouter>;
 }
-
