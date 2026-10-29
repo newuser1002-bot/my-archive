@@ -3,11 +3,24 @@
   box-sizing: border-box;
 }
 
+/* 공통 글꼴 */
+:root {
+  --font-body: "Pretendard", sans-serif;
+  --font-title: "Gowun Batang", serif;
+}
+
 /* 브라우저 기본 여백 제거 및 앱 바깥 배경 설정 */
+/* 글꼴은 자식 요소에 상속 body에 설정하면 안쪽 앱과 페이지에도 적용됨 */
 body {
   margin: 0;
-  font-family: sans-serif;
   background: #eeeeee;
+  font-family: var(--font-body);
+
+}
+
+/* 이 클래스가 있는 요소는 제목 글꼴 사용 */
+.title-font {
+  font-family: var(--font-title);
 }
 
 /* 모바일 중심의 공통 화면 틀 */
