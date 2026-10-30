@@ -62,7 +62,7 @@ export function createArchiveBridge({ getStorage, makeId = prefix => `${prefix}-
     }
     notify();
   }
-  function write(kind, idOrWork, draft) {
+  function write(kind, idOrWork, draft, expectedReview) {
     let source;
     try { source = read(); } catch { throw new Error('기존 자료를 읽을 수 없어 저장을 중단했어요. 입력 내용은 유지됩니다.'); }
     const { raw, works, reviews, legacy, storage } = source;
@@ -88,6 +88,9 @@ export function createArchiveBridge({ getStorage, makeId = prefix => `${prefix}-
     } else if (kind === 'update') {
       const previous = reviews.find(item => item.id === idOrWork);
       if (!previous) throw new Error('기록이 삭제됐거나 존재하지 않아요. 새 기록으로 만들지 않았어요.');
+      if (expectedReview && ['workId', 'viewedAt', 'rating', 'shortReview', 'story', 'photoUrl'].some(key => previous[key] !== expectedReview[key])) {
+        throw new Error('다른 탭에서 이 기록이 변경됐어요. 입력 내용은 유지됩니다. 작성 내용을 따로 보관한 뒤 최신 기록을 다시 열어 비교해 주세요.');
+      }
       next[rowsKey] = raw[rowsKey].map(item => String(item.id) === idOrWork ? { ...item, ...reviewToWire(draft, legacy), id: item.id, workId: item.workId } : item);
     } else throw new Error('알 수 없는 저장 요청이에요.');
     const checked = decodeArchive(next);
@@ -104,6 +107,6 @@ export function createArchiveBridge({ getStorage, makeId = prefix => `${prefix}-
     refresh,
     createWorkWithReview: (work, review) => write('create', work, review),
     addReview: (workId, review) => write('add', workId, review),
-    updateReview: (reviewId, review) => write('update', reviewId, review),
+    updateReview: (reviewId, review, expectedReview) => write('update', reviewId, review, expectedReview),
   };
 }

@@ -54,7 +54,7 @@ const { works, reviews, error, isLoading,
 | --- | --- |
 | createWorkWithReview(workDraft, reviewDraft) | ID 생성 및 저장, {workId,reviewId} 반환 |
 | addReview(workId, reviewDraft) | 작품 복제 없이 추가, {reviewId} 반환 |
-| updateReview(reviewId, reviewDraft) | 기존 id/workId 유지하며 수정 |
+| updateReview(reviewId, reviewDraft, expectedReview?) | 기존 id/workId 유지. B는 편집 시작 시 원본을 세 번째 인자로 전달해 다른 탭 변경 시 저장 중단 |
 | refresh() | 현재 저장 자료 재조회 |
 
 workDraft = {title,category,genre}.
@@ -74,7 +74,7 @@ C는 Context의 최신 reviews를 읽으면 된다. 삭제는 C 담당으로 구
 - 취소는 앱 내 확인창, 새로고침/닫기는 beforeunload 경고. 공통 라우터의 모든 내부 이동 가드는 추가하지 않음.
 
 ## 검증
-자동28개 테스트, lint/build/diff check 통과.
+자동35개 테스트 및 lint/build/diff 검사 통과. 10월30일 전체 재검증 내역은 B-VERIFICATION.md 참고.
 실제 앱에서 기존4.5점 유지 저장·작품+첫 기록 생성·C 경로 이동·재감상·사진 저장/복원·수정/재조회 확인.
 독립 검증으로 실패 복구·사진 교체/제거·취소·연속 클릭·장르/80자 제한·320/390px를 확인했다. 상세는 B-VERIFICATION.md 참고.
 
@@ -85,5 +85,5 @@ C는 Context의 최신 reviews를 읽으면 된다. 삭제는 C 담당으로 구
 
 ## 인계 상태
 B 소스·연결·로컬 검증 완료, GitHub 이슈#1 생성 완료.
-브랜치 push/PR는 로컬 Git 로그인 정보가 없어 대기 중이다. 연결 도구도403으로 쓰기를 거부한다. main 병합·배포는 하지 않았다.
+로컬 Git 로그인 후 push --dry-run 성공으로 업로드 인증·권한을 확인했다. 사용자 ‘전달’ 신호 전까지 실제 push/PR는 보류한다. main 병합·배포는 하지 않았다.
 공통 배경/폭은 Layout 유지. D의 공통 별점·아이콘 제공 시 B 전용 UI 교체 가능.

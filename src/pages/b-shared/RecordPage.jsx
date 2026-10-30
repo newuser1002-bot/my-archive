@@ -20,6 +20,7 @@ export default function RecordPage({ mode, work, review, archive }) {
   const creatingWork = mode === 'work';
   const editing = mode === 'edit';
   const navigate = useNavigate();
+  const originalReview = useRef(review).current;
   const [workValues, setWorkValues] = useState({ title: '', category: 'movie', genre: '' });
   const [values, setValues] = useState(() => initialReview(review));
   const [errors, setErrors] = useState({});
@@ -89,7 +90,7 @@ export default function RecordPage({ mode, work, review, archive }) {
   async function save(event) {
     event.preventDefault();
     if (lock.current || photoBusy) return;
-    const nextErrors = validateRecord(workValues, values, creatingWork, review);
+    const nextErrors = validateRecord(workValues, values, creatingWork, originalReview);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) {
       setStatus('필수 항목과 입력 내용을 확인해 주세요.');
@@ -101,13 +102,13 @@ export default function RecordPage({ mode, work, review, archive }) {
     setBusy(true);
     setStatus('');
     try {
-      const draft = normalizeReview(values);
+      const draft = normalizeReview(values, editing ? originalReview : undefined);
       let targetId = work?.id;
       if (creatingWork) {
         const result = await archive.createWorkWithReview({ title: workValues.title.trim(), category: workValues.category, genre: workValues.genre.trim() }, draft);
         targetId = result?.workId;
         if (typeof targetId !== 'string' || !targetId) throw new Error('저장 결과의 작품 ID를 확인하지 못했어요. 중복 저장 전에 A 담당 연결을 확인해 주세요.');
-      } else if (editing) await archive.updateReview(review.id, draft);
+      } else if (editing) await archive.updateReview(originalReview.id, draft, originalReview);
       else await archive.addReview(work.id, draft);
       if (!mounted.current) return;
       setDirty(false);

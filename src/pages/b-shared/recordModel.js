@@ -24,7 +24,9 @@ export function isValidDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const [year, month, day] = value.split('-').map(Number);
   if (year < 1 || month < 1 || month > 12 || day < 1) return false;
-  return day <= new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  return day <= days[month - 1];
 }
 
 export function initialReview(review) {
@@ -37,12 +39,12 @@ export function initialReview(review) {
   };
 }
 
-export function normalizeReview(review) {
+export function normalizeReview(review, originalReview) {
   return {
     viewedAt: review.viewedAt,
     rating: review.rating === null ? null : Number(review.rating),
-    shortReview: review.shortReview.trim(),
-    story: review.story.trim(),
+    shortReview: review.shortReview === originalReview?.shortReview ? review.shortReview : review.shortReview.trim(),
+    story: review.story === originalReview?.story ? review.story : review.story.trim(),
     photoUrl: review.photoUrl,
   };
 }

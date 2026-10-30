@@ -13,6 +13,48 @@ function setup(raw = figmaSeed) {
 }
 const draft = { viewedAt: '2026-10-29', rating: null, shortReview: '', story: '', photoUrl: '' };
 
+test('다른 탭이 같은 기록을 수정하면 오래된 입력으로 덮어쓰지 않음', () => {
+  const env = setup(); const original = env.bridge.getSnapshot().reviews.find(item => item.id === '2');
+  const latest = env.raw(); latest.memories[1].body = '다른 탭의 최신 이야기';
+  env.replace(JSON.stringify(latest)); env.bridge.refresh(); const before = env.saved();
+  assert.throws(() => env.bridge.updateReview('2', { ...original, story: '오래된 창의 이야기' }, original), /다른 탭/);
+  assert.equal(env.saved(), before);
+});
+
+test('다른 기록만 변경됐으면 현재 기록 수정을 허용하고 둘 다 유지', () => {
+  const env = setup(); const original = env.bridge.getSnapshot().reviews.find(item => item.id === '2');
+  const latest = env.raw(); latest.memories[0].body = '다른 기록 수정';
+  env.replace(JSON.stringify(latest));
+  env.bridge.updateReview('2', { ...original, story: '현재 기록 수정' }, original);
+  assert.equal(env.raw().memories[0].body, '다른 기록 수정');
+  assert.equal(env.raw().memories[1].body, '현재 기록 수정');
+});
+
+test('작성 중 다른 탭에서 작품이 삭제되면 재감상을 저장하거나 작품을 되살리지 않음', () => {
+  const env = setup(); const latest = env.raw();
+  latest.works = latest.works.filter(item => item.id !== 1);
+  latest.memories = latest.memories.filter(item => item.workId !== 1);
+  env.replace(JSON.stringify(latest)); const before = env.saved();
+  assert.throws(() => env.bridge.addReview('1', draft), /삭제/);
+  assert.equal(env.saved(), before);
+});
+
+test('수정 중 다른 탭에서 기록이 삭제되면 새 기록으로 복구하지 않음', () => {
+  const env = setup(); const latest = env.raw();
+  latest.memories = latest.memories.filter(item => item.id !== 2);
+  env.replace(JSON.stringify(latest)); const before = env.saved();
+  assert.throws(() => env.bridge.updateReview('2', draft), /새 기록으로 만들지/);
+  assert.equal(env.saved(), before);
+});
+
+test('유효하지 않은 저장 요청은 구독 알림과 저장 자료를 변경하지 않음', () => {
+  const env = setup(); const before = env.saved(); let notifications = 0;
+  env.bridge.subscribe(() => { notifications += 1; });
+  assert.throws(() => env.bridge.updateReview('2', { ...draft, viewedAt: '2026-02-30' }), /날짜/);
+  assert.throws(() => env.bridge.addReview('1', { ...draft, rating: 6 }), /별점/);
+  assert.equal(env.saved(), before); assert.equal(notifications, 0);
+});
+
 test('Figma 자료4작품10기록을 문자열 ID와 팀 필드로 읽고 반점 보존', () => {
   const { works, reviews } = decodeArchive(figmaSeed);
   assert.equal(works.length, 4); assert.equal(reviews.length, 10); assert.equal(works[0].id, '1'); assert.equal(works[0].category, 'movie');

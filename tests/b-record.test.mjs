@@ -7,6 +7,22 @@ import { preparePhoto, PHOTO_INPUT_LIMIT } from '../src/pages/b-shared/photo.js'
 const work = { title: '작품', category: 'movie', genre: '드라마' };
 const review = { ...initialReview(), viewedAt: '2026-10-29' };
 test('현재 날짜를 로컬 달력 기준으로 생성', () => assert.equal(todayValue(new Date(2026, 9, 29, 0, 10)), '2026-10-29'));
+
+test('1~99년 날짜도 실제 연도의 윤년 규칙으로 판정', () => {
+  assert.equal(isValidDate('0004-02-29'), true);
+  assert.equal(isValidDate('0001-02-29'), false);
+  assert.equal(isValidDate('0096-02-29'), true);
+});
+
+test('수정하지 않은 기존 글의 공백·줄바꿈·긴 한줄평을 그대로 보존', () => {
+  const original = { ...review, shortReview: ` ${'기'.repeat(90)} `, story: '\n  그날의 이야기  \n' };
+  const changedDate = { ...original, viewedAt: '2026-10-30' };
+  const stored = normalizeReview(changedDate, original);
+  assert.equal(stored.shortReview, original.shortReview);
+  assert.equal(stored.story, original.story);
+  assert.equal(stored.viewedAt, '2026-10-30');
+  assert.equal(normalizeReview({ ...original, shortReview: ' 새 메모 ' }, original).shortReview, '새 메모');
+});
 test('윤년·월·실재 날짜 검증', () => {
   for (const valid of ['2024-02-29', '2026-10-29', '2000-02-29']) assert.equal(isValidDate(valid), true);
   for (const invalid of ['', '2026-02-29', '1900-02-29', '2026-04-31', '2026-13-01', '2026-00-01', '2026-1-01', '0000-01-01']) assert.equal(isValidDate(invalid), false, invalid);
