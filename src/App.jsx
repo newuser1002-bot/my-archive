@@ -1,5 +1,5 @@
 // 주소에 따라 화면을 선택하는 라우터
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Routes, Route } from "react-router-dom";
 
 // 모바일 공통 레이아웃
 import Layout from "./layouts/Layout";
@@ -14,9 +14,8 @@ import Share from "./pages/share/Share";
 import Stats from "./pages/stats/Stats";
 import ArchiveBridgeProvider from "./pages/b-shared/ArchiveBridgeProvider";
 
-function App() {
+function AppContent() {
   return (
-    <BrowserRouter>
       <ArchiveBridgeProvider>
       <Layout>
         <Routes>
@@ -46,8 +45,11 @@ function App() {
         </Routes>
       </Layout>
       </ArchiveBridgeProvider>
-    </BrowserRouter>
   );
 }
 
-export default App;
+const router = createBrowserRouter([{ path: '*', element: <AppContent /> }]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}

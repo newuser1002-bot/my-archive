@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { HashRouter, Link, Route, Routes, useParams } from 'react-router-dom';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
 import Layout from '../../src/layouts/Layout';
 import WorkCreate from '../../src/pages/work-create/WorkCreate';
 import ReviewCreate from '../../src/pages/review-create/ReviewCreate';
@@ -20,10 +20,10 @@ export function DemoResult({ data }) {
 // 실제 앱과 같은 저장 연결부를 읽는 검증용 화면. C 페이지는 변경하지 않는다.
 export function SharedDemo() {
   const data = useBArchive();
-  return <HashRouter><Layout><aside className="b-demo-bar"><strong>실제 저장 연결 검증 · archive-data-v2 · C 화면 아님</strong></aside><Routes>
+  return <Layout><aside className="b-demo-bar"><strong>실제 저장 연결 검증 · archive-data-v2 · C 화면 아님</strong></aside><Routes>
     <Route path="/" element={<section className="b-demo-result"><h1>연결된 작품 목록</h1><Link to="/works/new">작품 등록</Link>{data.error && <p role="alert">{data.error}</p>}{data.works.map(work => <p key={work.id}><Link to={`/works/${encodeURIComponent(work.id)}`}>{work.title}</Link></p>)}</section>} />
     <Route path="/works/new" element={<WorkCreate />} /><Route path="/works/:workId/reviews/new" element={<ReviewCreate />} /><Route path="/reviews/:reviewId/edit" element={<ReviewEdit />} /><Route path="/works/:workId" element={<DemoResult data={data} />} />
-  </Routes></Layout></HashRouter>;
+  </Routes></Layout>;
 }
 
 export default function Demo() {
@@ -47,13 +47,14 @@ export default function Demo() {
     return next.result;
   }
   const archive = {
-    ...data, isLoading: sourceState === 'loading', error: sourceState === 'error' ? '검증용 읽기 오류' : loadError,
+    ...data, works: sourceState === 'missing' ? [] : data.works, reviews: sourceState === 'missing' ? [] : data.reviews,
+    isLoading: sourceState === 'loading', error: sourceState === 'error' ? '검증용 읽기 오류' : loadError,
     createWorkWithReview: (work, review) => write('create', work, review),
     addReview: (workId, review) => write('add', workId, review),
     updateReview: (reviewId, review) => write('update', reviewId, review),
   };
-  return <HashRouter><BArchiveContext.Provider value={archive}><Layout>
-    <aside className="b-demo-bar"><strong>B 전용 검증 모드 · 실제 A/C 기능 아님</strong><label><input type="checkbox" checked={failure} onChange={e => setFailure(e.target.checked)} />저장 실패 시험</label><label><input type="checkbox" checked={slow} onChange={e => setSlow(e.target.checked)} />느린 저장 시험</label><label>읽기 상태<select value={sourceState} onChange={e => setSourceState(e.target.value)}><option value="ready">정상</option><option value="loading">로딩</option><option value="error">읽기 오류</option></select></label>{loadError && <p>{loadError}</p>}</aside>
+  return <BArchiveContext.Provider value={archive}><Layout>
+    <aside className="b-demo-bar"><strong>B 전용 검증 모드 · 실제 A/C 기능 아님</strong><Link to="/">내부 이동 시험</Link><label><input type="checkbox" checked={failure} onChange={e => setFailure(e.target.checked)} />저장 실패 시험</label><label><input type="checkbox" checked={slow} onChange={e => setSlow(e.target.checked)} />느린 저장 시험</label><label>읽기 상태<select value={sourceState} onChange={e => setSourceState(e.target.value)}><option value="ready">정상</option><option value="loading">로딩</option><option value="error">읽기 오류</option><option value="missing">대상 삭제 상태 시험</option></select></label>{loadError && <p>{loadError}</p>}</aside>
     <Routes><Route path="/" element={<section className="b-demo-result"><h1>B 입력 기능 검증</h1><p>A의 공통 저장 함수가 연결되기 전 B를 독립적으로 확인하는 공간입니다.</p><Link to="/works/new">새 작품과 첫 기록 작성</Link>{data.works.map(work => <p key={work.id}><Link to={`/works/${encodeURIComponent(work.id)}`}>{work.title} 저장 결과 보기</Link></p>)}<p><Link to="/works/missing/reviews/new">없는 작품 예외 확인</Link></p><p><Link to="/reviews/missing/edit">없는 기록 예외 확인</Link></p></section>} /><Route path="/works/new" element={<WorkCreate />} /><Route path="/works/:workId/reviews/new" element={<ReviewCreate />} /><Route path="/reviews/:reviewId/edit" element={<ReviewEdit />} /><Route path="/works/:workId" element={<DemoResult data={data} />} /></Routes>
-  </Layout></BArchiveContext.Provider></HashRouter>;
+  </Layout></BArchiveContext.Provider>;
 }

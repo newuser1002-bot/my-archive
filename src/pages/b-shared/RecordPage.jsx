@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useBlocker, useNavigate } from 'react-router-dom';
 import { CATEGORIES, GENRES, SHORT_REVIEW_LIMIT, initialReview, normalizeReview, safePhotoUrl, validateRecord } from './recordModel';
 import { preparePhoto } from './photo';
 import RecordIcon from './RecordIcon';
@@ -16,7 +16,7 @@ export function RecordNotice({ title, children, loading = false }) {
   </main>;
 }
 
-export default function RecordPage({ mode, work, review, archive }) {
+export default function RecordPage({ mode, work, review, archive, blockedReason = '' }) {
   const creatingWork = mode === 'work';
   const editing = mode === 'edit';
   const navigate = useNavigate();
@@ -36,6 +36,9 @@ export default function RecordPage({ mode, work, review, archive }) {
   const fileInput = useRef(null);
   const form = useRef(null);
   const cancelDialog = useRef(null);
+  const allowNavigation = useRef(false);
+  const blocker = useBlocker(() => !allowNavigation.current && (dirty || photoBusy || busy));
+  const dialogOpen = showCancel || blocker.state === 'blocked';
   const backTo = creatingWork ? '/' : `/works/${encodeURIComponent(work.id)}`;
   const title = creatingWork ? '어떤 작품과 시간을\n보내셨나요?' : editing ? '그날의 기억을\n다듬어 보세요.' : '같은 작품, 또 다른\n오늘의 기억';
   const workCategory = CATEGORIES.find(item => item.value === work?.category);
@@ -48,17 +51,28 @@ export default function RecordPage({ mode, work, review, archive }) {
     return () => { mounted.current = false; photoRequest.current += 1; };
   }, []);
   useEffect(() => {
-    if (!dirty) return;
+    if (!dirty && !photoBusy && !busy) return;
     const preventLoss = event => { event.preventDefault(); event.returnValue = ''; };
     window.addEventListener('beforeunload', preventLoss);
     return () => window.removeEventListener('beforeunload', preventLoss);
-  }, [dirty]);
+  }, [dirty, photoBusy, busy]);
   useEffect(() => {
-    if (!showCancel) return;
+    if (!dialogOpen) return;
     const previousFocus = document.activeElement;
     cancelDialog.current?.querySelector('button')?.focus();
     return () => previousFocus?.focus();
-  }, [showCancel]);
+  }, [dialogOpen]);
+
+  function keepWriting() {
+    setShowCancel(false);
+    if (blocker.state === 'blocked') blocker.reset();
+  }
+  function leaveWithoutSaving() {
+    if (lock.current) return;
+    allowNavigation.current = true;
+    if (blocker.state === 'blocked') blocker.proceed();
+    else navigate(backTo);
+  }
 
   function change(name, value, isWork = false) {
     (isWork ? setWorkValues : setValues)(previous => ({ ...previous, [name]: value }));
@@ -68,7 +82,7 @@ export default function RecordPage({ mode, work, review, archive }) {
   }
   function cancel() {
     if (lock.current) return;
-    if (!dirty) navigate(backTo);
+    if (!dirty && !photoBusy) navigate(backTo);
     else setShowCancel(true);
   }
   async function selectPhoto(event) {
@@ -90,6 +104,7 @@ export default function RecordPage({ mode, work, review, archive }) {
   async function save(event) {
     event.preventDefault();
     if (lock.current || photoBusy) return;
+    if (blockedReason) { setStatus(blockedReason); return; }
     const nextErrors = validateRecord(workValues, values, creatingWork, originalReview);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) {
@@ -112,6 +127,8 @@ export default function RecordPage({ mode, work, review, archive }) {
       else await archive.addReview(work.id, draft);
       if (!mounted.current) return;
       setDirty(false);
+      allowNavigation.current = true;
+      if (blocker.state === 'blocked') blocker.reset();
       navigate(`/works/${encodeURIComponent(targetId)}`, { state: { recordSaved: true }, replace: true });
     } catch (error) {
       if (mounted.current) setStatus(error instanceof Error && error.message ? error.message : '저장하지 못했어요. 입력 내용을 유지했으니 다시 시도해 주세요.');
@@ -127,6 +144,7 @@ export default function RecordPage({ mode, work, review, archive }) {
     <div className="b-intro"><p className="b-eyebrow">{creatingWork ? 'NEW ARCHIVE' : editing ? 'EDIT MEMORY' : 'ANOTHER MOMENT'}</p><h1 className="title-font">{title}</h1><p>{creatingWork ? '작품보다 그날의 마음을 기록해 보세요.' : '작품과 함께한 순간을 남겨요.'}</p></div>
     {!creatingWork && <section className="b-work-summary" aria-label="기록할 작품"><span className={`b-summary-mark b-tone-${workCategory?.tone || 'forest'}`}>{work.title}</span><div><small>기록할 작품</small><h2>{work.title}</h2><p>{workCategory?.label || '작품'} · {work.genre}</p></div></section>}
     {!connected && <p className="b-connection" role="status">입력 화면은 준비됐어요. 실제 저장은 A의 공통 저장 기능 연결이 필요해요.</p>}
+    {blockedReason && <p className="b-save-status" role="alert">{blockedReason}</p>}
     <form ref={form} onSubmit={save} noValidate>
       <fieldset disabled={busy} className="b-fieldset">
         {creatingWork && <section className="b-section">
@@ -144,15 +162,15 @@ export default function RecordPage({ mode, work, review, archive }) {
           <div className="b-field"><label htmlFor="b-story">그날의 이야기 <small>선택</small></label><textarea id="b-story" rows={7} value={values.story} onChange={e => change('story', e.target.value)} placeholder={'누구와 함께했나요?\n어떤 마음이 들었나요?\n그날의 기억을 자유롭게 적어보세요.'} /><small>짧은 메모도 좋아요. 나중의 내가 다시 떠올릴 수 있도록.</small></div>
       </fieldset>
       <div className="b-save-status" role="alert" aria-live="polite">{status}</div>
-      <footer className="b-form-footer"><p>날짜 하나만 남겨도 소중한 기록이 됩니다.</p><button type="submit" className="b-button b-primary" disabled={busy || photoBusy || !connected}>{busy ? '저장하는 중…' : editing ? '수정한 기록 저장하기' : '나의 Archive에 저장하기'}<span aria-hidden="true">↗</span></button><button type="button" className="b-cancel" disabled={busy} onClick={cancel}>취소하고 돌아가기</button></footer>
+      <footer className="b-form-footer"><p>날짜 하나만 남겨도 소중한 기록이 됩니다.</p><button type="submit" className="b-button b-primary" disabled={busy || photoBusy || !connected || Boolean(blockedReason)}>{busy ? '저장하는 중…' : editing ? '수정한 기록 저장하기' : '나의 Archive에 저장하기'}<span aria-hidden="true">↗</span></button><button type="button" className="b-cancel" disabled={busy} onClick={cancel}>취소하고 돌아가기</button></footer>
     </form>
-    {showCancel && <div className="b-dialog-backdrop"><section ref={cancelDialog} role="alertdialog" aria-modal="true" aria-labelledby="b-cancel-title" aria-describedby="b-cancel-description" className="b-cancel-dialog" onKeyDown={event => {
-      if (event.key === 'Escape') setShowCancel(false);
+    {dialogOpen && <div className="b-dialog-backdrop"><section ref={cancelDialog} role="alertdialog" aria-modal="true" aria-labelledby="b-cancel-title" aria-describedby="b-cancel-description" className="b-cancel-dialog" onKeyDown={event => {
+      if (event.key === 'Escape') keepWriting();
       if (event.key === 'Tab') {
         const buttons = cancelDialog.current.querySelectorAll('button');
         if (event.shiftKey && document.activeElement === buttons[0]) { event.preventDefault(); buttons[1].focus(); }
         else if (!event.shiftKey && document.activeElement === buttons[1]) { event.preventDefault(); buttons[0].focus(); }
       }
-    }}><h2 id="b-cancel-title">작성을 그만둘까요?</h2><p id="b-cancel-description">변경한 내용은 저장되지 않아요.</p><button type="button" className="b-button b-primary" onClick={() => setShowCancel(false)}>계속 작성하기</button><button type="button" className="b-button b-dialog-leave" onClick={() => navigate(backTo)}>저장하지 않고 나가기</button></section></div>}
+    }}><h2 id="b-cancel-title">작성을 그만둘까요?</h2><p id="b-cancel-description">{busy ? '저장이 진행 중이에요. 완료될 때까지 기다려 주세요.' : '변경한 내용은 저장되지 않아요.'}</p><button type="button" className="b-button b-primary" onClick={keepWriting}>계속 작성하기</button><button type="button" className="b-button b-dialog-leave" disabled={busy} onClick={leaveWithoutSaving}>저장하지 않고 나가기</button></section></div>}
   </main>;
 }
