@@ -1,7 +1,7 @@
+import { useBArchive } from '../b-shared/archiveContext';
+import RecordSession from '../b-shared/RecordSession';
+
 export default function WorkCreate() {
-    return (
-        <main>
-            <h1>새 작품 등록</h1>
-        </main>
-    );
+  const archive = useBArchive();
+  return <RecordSession mode="work" archive={archive} />;
 }
