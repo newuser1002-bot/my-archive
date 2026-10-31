@@ -3,6 +3,7 @@
 기준 main: 3f99e6c07190405e2cedb0194e5320657e6d2257 / 로컬 브랜치: feat/b-record
 작업 이슈: https://github.com/newuser1002-bot/my-archive/issues/1
 인계 PR: https://github.com/newuser1002-bot/my-archive/pull/2
+최신 상태: 2026-10-31 PR #2 main 병합 완료(병합 커밋93c2309). C는 최신 main을 받아 시작하면 된다. 아래 기준 main은 B 개발 시작 당시 기준이다.
 
 ## 담당 범위
 작품 등록+첫 기록, 재감상 추가, 감상 기록 수정, 사진·입력·취소·오류 처리를 구현했다. 홈·상세·타임라인·삭제·공유·통계는 구현하지 않았다. App에 저장 연결 Provider를 추가하고 이동 보호를 위해 createBrowserRouter/RouterProvider로 초기화를 변경했다. 기존 주소·Layout·다른 담당 페이지는 유지했다.
@@ -87,5 +88,5 @@ C는 Context의 최신 reviews를 읽으면 된다. 삭제는 C 담당으로 구
 
 ## 인계 상태
 B 소스·연결·로컬 검증 완료, GitHub 이슈#1 생성 완료.
-2026-10-31 사용자 ‘전달’ 지시에 따라 feat/b-record 업로드 및 PR #2 생성을 완료했다. C는 이 브랜치를 기준으로 이어서 작업하거나 팀의 검토·병합 절차를 거쳐 main에서 시작할 수 있다. main 병합·배포는 하지 않았다. 최종 ZIP은 해당 브랜치의 최신 커밋으로 생성한다.
+2026-10-31 사용자 지시에 따라 feat/b-record 업로드·PR #2 생성 후 main 병합까지 완료했다. C는 최신 main을 기준으로 이어서 작업할 수 있다. 병합 직후 main의 파일 내용과 검증된 B 브랜치가 동일함을 확인했다. 배포는 하지 않았다.
 공통 배경/폭은 Layout 유지. D의 공통 별점·아이콘 제공 시 B 전용 UI 교체 가능.
