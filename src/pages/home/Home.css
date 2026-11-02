@@ -10,8 +10,8 @@
     justify-content: space-between; /* 양 끝에 보내 버린다. */
 }
 
-/* 브랜드 글꼴 */
-.home-brand {
+/* 브랜드 글꼴 헤더전용*/
+.home-font_header {
     font-family: var(--font-title);
     font-size: 17px;
     font-weight: 700;
@@ -21,6 +21,36 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+/* 헤더와 소개 영역 사이 간격과 body 글꼴*/
+.home-intro {
+    padding-top: 30px;
+    font-family: var(--font-body);
+}
+
+/* 소개 영역 중 '소' 크기 글꼴*/
+.home-intro-small {
+    font-size: 10px;
+    font-weight: 300;
+    color: #808000;
+    text-align: center;
+}
+
+/* 소개 영역 중 '중' 크기 글꼴*/
+.home-intro-middle {
+    font-size: 13px;
+    font-weight: 400;
+    color: #4B5563;
+    text-align: center;
+}
+
+/* 소개 영역 중 '대' 크기 글꼴*/
+.home-intro-large {
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
+    text-align: center;
 }
 
 /* 원형 프로필 버튼 */

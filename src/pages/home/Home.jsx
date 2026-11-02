@@ -20,14 +20,24 @@ export default function Home() {
 
     return (
         <main className="home-page">
+            
+            <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+
             {/* 홈 상단 : 로고 및 프로필 버튼 */}
             <header className="home-header">
-                <div className="home-brand">
+                <div className="home-font_header">
                     <img src={logo} className="home-logo"/> 
                     <span>나만의 Archive</span>
                 </div>
                 <span className="home-profile">나</span>
             </header>
+
+            <div className="home-intro">
+            <p className="home-intro-small">MY MEMORY ARCHIVE</p>
+            <p className="home-intro-large">오늘도 소중한 시간을 기록해 볼까요?</p>
+            <p className="home-intro-middle">작품과 함께한 순간을 차곡차곡 모아두었어요</p>
+            </div>
+
 
             <p>작품 {works.length}개</p>
             <p>감상 기록 {reviews.length}개</p>
@@ -44,6 +54,7 @@ export default function Home() {
                     </li>
                 ))}
             </ul>
+            </div>
         </main>
     );
 }
