@@ -1,0 +1,47 @@
+/* 홈 화면 안쪽 여백 */
+.home-page {
+    padding: 24px 20px 40px;    /* 위, 좌우, 아래 */
+}
+
+/* 로고와 프로필을 양쪽 끝에 배치 한다. */
+.home-header {
+    display: flex;  /* 요소 가로 배치 */
+    align-items: center;
+    justify-content: space-between; /* 양 끝에 보내 버린다. */
+}
+
+/* 브랜드 글꼴 */
+.home-brand {
+    font-family: var(--font-title);
+    font-size: 17px;
+    font-weight: 700;
+    color: black;
+
+    /* 로고와 글자 배치 */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 원형 프로필 버튼 */
+.home-profile {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%; /* 원형 */
+    background-color: #ded4c2;
+    color: #685f50;
+    font-size: 12px;
+    
+    /* 프로필 원 안 글자 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 로고 */
+.home-logo {
+    width: 34px;
+    height: 34px;
+}
