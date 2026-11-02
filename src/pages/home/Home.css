@@ -32,7 +32,7 @@
 /* 소개 영역 중 '소' 크기 글꼴*/
 .home-intro-small {
     font-size: 10px;
-    font-weight: 300;
+    font-weight: 600;
     color: #808000;
     text-align: center;
 }
@@ -51,6 +51,7 @@
     font-weight: 700;
     color: black;
     text-align: center;
+    font-family: var(--font-title);
 }
 
 /* 원형 프로필 버튼 */
