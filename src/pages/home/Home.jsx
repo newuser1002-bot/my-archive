@@ -32,16 +32,39 @@ export default function Home() {
                 <span className="home-profile">나</span>
             </header>
 
+            {/* 소개 영역 */}
             <div className="home-intro">
             <p className="home-intro-small">MY MEMORY ARCHIVE</p>
             <p className="home-intro-large">오늘도 소중한 시간을 기록해 볼까요?</p>
             <p className="home-intro-middle">작품과 함께한 순간을 차곡차곡 모아두었어요</p>
             </div>
 
+            {/* 나의 기록 카드 영역 */}
+            <section className="home-my_record_card">
+                {/* 상단 영역 */}
+                <div className="home-my_record_card_header">
+                <h2>나의 기록</h2>
+                <Link to="/stats">통계 보기 &gt;</Link>
+                </div>
 
-            <p>작품 {works.length}개</p>
-            <p>감상 기록 {reviews.length}개</p>
-            <p>평균 별점 {averageRating}</p>
+                {/* 하단 영역 */}
+                <div className="home-my_record_card_body">
+                    <div className="home-my_record_stat">
+                        <strong>{works.length}</strong>
+                        <span>작품</span>
+                    </div>
+                    
+                    <div className="home-my_record_stat">
+                        <strong>{reviews.length}</strong>
+                        <span>감상 기록</span>
+                    </div>
+
+                    <div className="home-my_record_stat">
+                        <strong>{averageRating}</strong>
+                        <span>평균 별점</span>
+                    </div>
+                </div>
+            </section>
 
             {/* 작품들 제목 출력 */}
             <ul>

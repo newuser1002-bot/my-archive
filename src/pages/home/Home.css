@@ -76,3 +76,60 @@
     width: 34px;
     height: 34px;
 }
+
+
+/* 나의 기록 카드 */
+.home-my_record_card {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fcf9f2;
+    border: 1px solid #bab6b0;
+    border-radius: 20px;
+
+    /* 좌우 이동 없음, 아래로 이동, 부드럽게 퍼지는 정도 | rgba 투명도 지정 0.08*/
+    box-shadow: 0 12px 40px rgba(67, 59, 47, 0.18);
+
+    font-family: var(--font-body);
+}
+
+/* 나의 기록 카드 상단 영역 */
+.home-my_record_card_header {
+    display: flex;  /* 가로 배치 */
+    align-items: center;    
+    justify-content: space-between; /* 요소를 양 끝으로 */
+}
+
+.home-my_record_card_header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.home-my_record_card_header a {
+    color: #4B5563;
+    text-decoration: none; /* 링크의 밑줄을 제거 */
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* 나의 기록 카드 바디 영역 */
+.home-my_record_card_body {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/* 숫자와 설명 배치 */
+.home-my_record_stat {
+    flex: 1; /* 가로 공간을 똑같이 나눠 가짐 */
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: center;
+}
+
+/* 바로 앞에도 같은 항목이 있는 경우에 작동함 왼쪽에 구분선을 표시한다. */
+.home-my_record_stat + .home-my_record_stat {
+    border-left: 1px solid #bab6b0;
+}
