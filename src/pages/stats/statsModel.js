@@ -48,3 +48,63 @@ export function calcStats(works, reviews) {
     top,
   };
 }
+
+// ---- 기간 필터와 월별 집계 ----
+// 기간 값: 'all' 전체 / 'year' 올해 / '3months' 이번 달을 포함한 최근 3개월
+export const PERIODS = [
+  { value: 'all', label: '전체' },
+  { value: 'year', label: '올해' },
+  { value: '3months', label: '최근 3개월' },
+];
+
+const pad = n => String(n).padStart(2, '0');
+
+// 기준 달에서 delta개월 앞뒤의 연·월을 구한다.
+function shiftMonth(year, month, delta) {
+  const index = year * 12 + (month - 1) + delta;
+  return { year: Math.floor(index / 12), month: (index % 12) + 1 };
+}
+
+// 선택한 기간에 해당하는 기록만 남긴다.
+// now를 인자로 받아서 테스트에서 날짜를 고정할 수 있다.
+// viewedAt은 'YYYY-MM-DD' 문자열이라 문자열 비교로 날짜 순서를 알 수 있다.
+export function filterByPeriod(reviews, period, now = new Date()) {
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  if (period === 'year') return reviews.filter(review => review.viewedAt.startsWith(`${year}-`));
+  if (period === '3months') {
+    const from = shiftMonth(year, month, -2);
+    const start = `${from.year}-${pad(from.month)}-01`;
+    return reviews.filter(review => review.viewedAt >= start);
+  }
+  return reviews;
+}
+
+// 월별 기록 수. 올해는 1~12월, 최근 3개월은 3칸, 전체는 최근 12개월을 보여준다.
+// ratio는 가장 많은 달을 1로 봤을 때의 비율이라 막대 높이에 바로 쓸 수 있다.
+export function calcMonthly(works, reviews, period, now = new Date()) {
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const workIds = new Set(works.map(work => work.id));
+  // 작품이 삭제되어 연결이 끊긴 기록은 여기서도 제외한다.
+  const valid = reviews.filter(review => workIds.has(review.workId));
+
+  let slots;
+  if (period === 'year') {
+    slots = Array.from({ length: 12 }, (_, i) => ({ year, month: i + 1 }));
+  } else {
+    const length = period === '3months' ? 3 : 12;
+    slots = Array.from({ length }, (_, i) => shiftMonth(year, month, i - (length - 1)));
+  }
+
+  const counts = slots.map(slot => ({
+    ...slot,
+    count: valid.filter(review => review.viewedAt.startsWith(`${slot.year}-${pad(slot.month)}-`)).length,
+  }));
+  const max = Math.max(0, ...counts.map(item => item.count));
+  const months = counts.map(item => ({ ...item, ratio: max ? item.count / max : 0 }));
+  // 가장 많이 기록한 달. 동점이면 더 최근 달을 고른다.
+  const peak = max > 0 ? months.reduce((best, item) => (item.count >= best.count ? item : best)) : null;
+
+  return { months, max, peak };
+}
