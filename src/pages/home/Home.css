@@ -133,3 +133,135 @@
 .home-my_record_stat + .home-my_record_stat {
     border-left: 1px solid #bab6b0;
 }
+
+
+.home-works {
+    font-family: var(--font-body);
+    margin-top: 30px;
+}
+
+.home-works-header {
+    display: flex;  /* 가로 배치 */
+    align-items: center;    
+    justify-content: space-between; /* 요소를 양 끝으로 */
+}
+
+.home-works-header h2 {
+    font-family: var(--font-title);
+}
+
+.home-works-header span {
+    color: #4B5563;
+    font-size: 13px;
+}
+
+.home-works-filters {
+    display: flex;  /* 가로 배치 */
+    gap: 16px;
+}
+
+.home-works-filters button {
+    padding: 4px 14px; /* 위 아래, 좌우 */
+    background-color: #fcf9f2;
+    border-radius: 999px;
+    border: 1px solid #bab6b0;
+    cursor: pointer;    /* 마우스를 올리면 손 모양 */
+
+    /* 좌우 이동 없음, 아래로 이동, 부드럽게 퍼지는 정도 | rgba 투명도 지정 0.18*/
+    box-shadow: 0 12px 40px rgba(67, 59, 47, 0.18);
+}
+
+/* 작품 목록을 같은 너비의 2열로 배치 */
+/* 부모 grid가 가로 공간을 두 칸으로 나눠서 카드 너비를 정해준다. */
+.home-work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);  /* 가로 공간을 같은 너비의 두 칸으로 나눠준다 */
+    margin-top: 30px;
+    gap: 22px 22px; /* 카드 사이 간격 세로 * 가로 간격 */
+}
+
+.home-work-card {
+    
+    text-decoration: none; /* 링크의 밑줄을 제거 */
+}
+
+/* 정한 카드 너비를 기준으로 높이 계산 : aspect-ratio, 표지 색, 모서리 둥글게 해서 표지가 나오게 된다. */
+.home-work-cover {
+    aspect-ratio: 0.78; /* 너비 % 높이 : 세로로 긴 표지 */
+    border-radius: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: var(--font-title);
+    color: white;
+    font-size: 20px;
+
+    /* 좌우 이동 없음, 아래로 이동, 부드럽게 퍼지는 정도 | rgba 투명도 지정 0.18*/
+    box-shadow: 0 12px 40px rgba(67, 59, 47, 0.18);
+
+    /* 배지를 배치할 기준 */
+    position: relative;
+}
+
+/* 콘텐츠 아이콘(배지) 위치 */ 
+.home-work-badge {
+    position: absolute; /* absolute는 일반적인 배치 흐름에서 빠져서 가장 가까운 위치 기준 조상 요소를 따라 배치된다. 여기서는 relative */
+    left: 10px;
+    bottom: 10px;
+
+    display: flex;  /* 가로 배치 */
+    align-items: center;    
+
+    background: rgba(0, 0, 0, 0.55); /* 반투명 검정 */
+    border-radius: 8px;
+    padding: 4px 8px; /* 위 아래, 좌우 */
+    font-size: 15px;
+
+    gap: 5px;
+}
+
+/* linear-gradient()는 여러 색이 자연스럽게 이어지는 배경을 만들어준다. */
+/* 145deg 는 색이 이어지는 방향, 왼쪽 위에서 오른쪽 아래 방향으로 진행한다. */
+/* 첫 색은 0%에서 진행, 두 번째 색은 68% 지점에 놓이게 되고 마지막은 100% 지점에 놓인다. */
+/* 영화 */
+.home-work-cover-movie {
+  background: linear-gradient(145deg, #aaa88b, #6e735a 68%, #484b3c);
+}
+
+/* 드라마 */
+.home-work-cover-drama {
+  background: linear-gradient(150deg, #d3b99a, #a77760 65%, #72594f);
+}
+
+/* 책 */
+.home-work-cover-book {
+  background: linear-gradient(145deg, #bdc5bd, #7f9690 65%, #586f6b);
+}
+
+/* 게임 */
+.home-work-cover-game {
+  background: linear-gradient(145deg, #c6c7a5, #899477 58%, #5d6b59);
+}
+
+.home-work-info {
+    flex: 1; /* 가로 공간을 똑같이 나눠 가짐 */
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+
+    min-height: 70px;
+
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+}
+
+.home-work-info strong {
+    color: black;
+}
+
+.home-work-info span {
+    color: #4B5563;
+    font-size: 14px;
+}
