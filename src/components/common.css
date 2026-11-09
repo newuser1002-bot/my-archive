@@ -1,0 +1,66 @@
+/* 공통 카드·별점 스타일 (D 담당) */
+
+.common-card {
+  margin: 0 20px 18px;
+  padding: 20px;
+  border: 1px solid #dfd8cc;
+  border-radius: 18px;
+  background: #fcf9f2;
+}
+
+.common-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.common-card-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 15px;
+  color: #34332e;
+}
+
+.common-card-head span {
+  color: #7c786e;
+  font-size: 11px;
+}
+
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #b48b4f;
+}
+
+.star-rating-empty {
+  color: #7c786e;
+  font-size: 11px;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+}
+
+.star-bg,
+.star-fg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.star-bg { color: #d9d2c4; }
+.star-fg { overflow: hidden; }
+.star-fg svg { fill: #b48b4f; stroke: #b48b4f; }
+.star-bg svg { fill: #d9d2c4; stroke: #d9d2c4; }
+
+.star-number {
+  margin-left: 5px;
+  font-size: 12px;
+  color: #34332e;
+}

@@ -1,0 +1,134 @@
+/* 통계 화면 전용 스타일 (D 담당) */
+
+.stats-page { padding-bottom: 36px; }
+
+.stats-intro { padding: 31px 23px 25px; }
+.stats-intro .eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  color: #74735f;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.stats-intro h1 {
+  margin: 0 0 12px;
+  font-size: 26px;
+  line-height: 1.4;
+  color: #34332e;
+}
+.stats-intro p { margin: 0; color: #7c786e; font-size: 14px; line-height: 1.7; }
+
+/* 기간 선택 버튼 */
+.stats-filter { display: flex; gap: 8px; margin: 0 20px 18px; }
+.stats-filter button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid #dfd8cc;
+  border-radius: 99px;
+  background: #fcf9f2;
+  color: #59584f;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.stats-filter button[aria-pressed="true"] {
+  border-color: #34332e;
+  background: #34332e;
+  color: #fcf9f2;
+}
+.stats-filter button:focus-visible { outline: 2px solid #b48b4f; outline-offset: 2px; }
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 20px 28px;
+  padding: 22px 8px;
+  border: 1px solid #dfd8cc;
+  border-radius: 18px;
+  background: #fcf9f2;
+}
+.stats-summary > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border-right: 1px solid #dfd8cc;
+}
+.stats-summary > div:last-child { border-right: 0; }
+.stats-summary b { font-size: 22px; color: #34332e; }
+.stats-summary span { color: #7c786e; font-size: 11px; }
+
+.stats-bar-row {
+  display: grid;
+  grid-template-columns: 78px 1fr 24px;
+  align-items: center;
+  gap: 10px;
+  margin: 13px 0;
+}
+.stats-bar-row.genre { grid-template-columns: 110px 1fr 24px; }
+.stats-bar-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #59584f;
+  font-size: 11px;
+}
+.stats-bar-label i {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #74735f;
+  background: #ebe8dc;
+  font-style: normal;
+}
+.stats-bar-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #ebe9e2;
+}
+.stats-bar-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #74735f;
+}
+.stats-bar-row > b { text-align: right; font-size: 12px; color: #34332e; }
+
+/* 월별 감상 추이 그래프: 막대 높이는 화면(Stats.jsx)에서 px로 지정한다 */
+.month-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 6px;
+  height: 136px;
+}
+.month-col {
+  flex: 1 1 0;
+  max-width: 40px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.month-count { min-height: 14px; color: #59584f; font-size: 10px; }
+.month-bar { width: 100%; border-radius: 4px 4px 0 0; background: #74735f; }
+.month-bar.is-empty { background: #d9d2c4; }
+.month-label { color: #66625a; font-size: 10px; white-space: nowrap; }
+.month-col.is-peak .month-count,
+.month-col.is-peak .month-label { color: #34332e; font-weight: 700; }
+.month-col.is-peak .month-bar { background: #b48b4f; }
+.month-insight { margin: 16px 0 0; color: #59584f; font-size: 12px; line-height: 1.6; }
+
+.stats-note { margin: 0 20px; }
+.stats-note p { margin: 0; color: #59584f; font-size: 13px; line-height: 1.7; }
+.stats-note strong { display: block; margin-bottom: 4px; color: #34332e; }
+.stats-note .stats-note-rating { margin-top: 8px; }
+
+.stats-message { margin: 0 20px; padding: 24px 20px; text-align: center; color: #7c786e; font-size: 13px; line-height: 1.7; }
+.stats-link { color: #74735f; font-weight: 700; }
