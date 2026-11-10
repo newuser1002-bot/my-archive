@@ -60,7 +60,7 @@ export const PERIODS = [
 const pad = n => String(n).padStart(2, '0');
 
 // 기준 달에서 delta개월 앞뒤의 연·월을 구한다.
-function shiftMonth(year, month, delta) {
+export function shiftMonth(year, month, delta) {
   const index = year * 12 + (month - 1) + delta;
   return { year: Math.floor(index / 12), month: (index % 12) + 1 };
 }

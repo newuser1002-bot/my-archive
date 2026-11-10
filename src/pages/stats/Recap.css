@@ -1,0 +1,251 @@
+/* 월간 결산 영역과 카드 스타일 (D 담당) */
+
+/* ---- 결산 카드 (이미지로 저장되는 부분) ---- */
+.recap-card {
+  position: relative;
+  overflow: hidden;
+  width: 360px;
+  height: 640px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  /* 인스타 스토리에서 위·아래는 버튼에 가려지므로 내용을 가운데에 모은다. */
+  padding: 92px 30px 120px;
+  background: linear-gradient(165deg, #ffd3e6 0%, #dcd3ff 52%, #c4eeff 100%);
+  color: #1b1a2e;
+  /* 이미지로 저장할 때 웹 글꼴은 쓰지 않으므로, 화면과 저장 이미지가 같게 보이도록 기기 글꼴만 적는다. */
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+}
+
+.recap-glow { position: absolute; border-radius: 50%; }
+.recap-glow-a {
+  left: -90px; top: 340px; width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(255, 247, 168, 0.85) 0%, rgba(255, 247, 168, 0) 70%);
+}
+.recap-glow-b {
+  right: -80px; top: 20px; width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.recap-spark { position: absolute; fill: #1b1a2e; }
+.recap-spark-lg { right: 34px; top: 98px; width: 30px; height: 30px; }
+.recap-spark-sm { right: 72px; top: 142px; width: 14px; height: 14px; }
+
+.recap-pill {
+  position: relative;
+  align-self: flex-start;
+  padding: 5px 13px;
+  border: 2px solid #1b1a2e;
+  border-radius: 99px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.recap-nick {
+  position: relative;
+  margin: 20px 0 0;
+  line-height: 1.12;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+/* 둘째 줄에 형광펜을 칠한 것처럼 보이게 한다. */
+.recap-nick span { background: linear-gradient(transparent 58%, #fff36b 58%); }
+
+.recap-summary {
+  position: relative;
+  margin: 18px 0 0;
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 700;
+  color: #34334f;
+}
+
+.recap-works {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
+}
+.recap-work {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 2px solid #1b1a2e;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 3px 3px 0 #1b1a2e;
+}
+.recap-work:nth-child(1) { transform: rotate(-3deg); }
+.recap-work:nth-child(2) { transform: rotate(2.5deg); }
+.recap-work:nth-child(3) { transform: rotate(-2deg); }
+.recap-work b { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recap-tag {
+  flex: none;
+  padding: 3px 9px;
+  border: 1.5px solid #1b1a2e;
+  border-radius: 99px;
+  background: #ffe27a;
+  font-size: 10px;
+  font-weight: 800;
+}
+.recap-work-drama .recap-tag { background: #a9e4ff; }
+.recap-work-book .recap-tag { background: #ffb6d5; }
+.recap-work-game .recap-tag { background: #c8f0b4; }
+
+/* ---- 월간 결산 영역 ---- */
+.recap-stepper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px; }
+.recap-stepper span { min-width: 120px; text-align: center; font-size: 14px; font-weight: 700; color: #34332e; }
+.recap-stepper button {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dfd8cc;
+  border-radius: 50%;
+  background: #fcf9f2;
+  color: #34332e;
+  cursor: pointer;
+}
+.recap-stepper button:disabled { opacity: 0.35; cursor: default; }
+
+/* 카드를 0.6배로 줄여서 미리보기로 보여준다. (저장할 때는 원래 크기 360×640으로 그린다) */
+.recap-stage {
+  width: 216px;
+  height: 384px;
+  margin: 0 auto 18px;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(52, 51, 46, 0.22);
+}
+.recap-scale { width: 360px; height: 640px; transform: scale(0.6); transform-origin: top left; }
+
+.recap-actions { display: flex; gap: 10px; }
+.recap-actions button {
+  flex: 1;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #34332e;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.recap-actions button:disabled { opacity: 0.6; cursor: default; }
+.recap-save { background: #34332e; color: #fcf9f2; }
+.recap-share { background: #fcf9f2; color: #34332e; }
+
+.recap-status { min-height: 18px; margin: 12px 0 0; text-align: center; color: #59584f; font-size: 12px; }
+.recap-hint { margin: 4px 0 0; text-align: center; color: #7c786e; font-size: 11px; line-height: 1.6; }
+.recap-empty { margin: 8px 0 12px; text-align: center; color: #7c786e; font-size: 13px; line-height: 1.7; }
+
+
+/* ---- 카드 디자인 4종: 파스텔(기본)은 위의 .recap-card, 나머지는 아래에서 바꿔 입힌다 ---- */
+
+/* 네온 */
+.recap-theme-neon { background: #0e0b1a; color: #fff; }
+.recap-theme-neon .recap-glow-a {
+  left: -90px; top: 40px; width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(255, 43, 214, 0.55) 0%, rgba(255, 43, 214, 0) 70%);
+}
+.recap-theme-neon .recap-glow-b {
+  right: -100px; top: 330px; width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(32, 216, 255, 0.5) 0%, rgba(32, 216, 255, 0) 70%);
+}
+.recap-theme-neon .recap-spark { fill: #c8ff3d; }
+.recap-theme-neon .recap-pill { border: 1.5px solid #c8ff3d; background: transparent; color: #c8ff3d; }
+.recap-theme-neon .recap-nick { text-shadow: 0 0 24px rgba(255, 255, 255, 0.35); }
+.recap-theme-neon .recap-nick span { background: none; color: #c8ff3d; text-shadow: 0 0 22px rgba(200, 255, 61, 0.7); }
+.recap-theme-neon .recap-summary { color: #ddd8f0; }
+.recap-theme-neon .recap-work { border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.09); box-shadow: none; }
+.recap-theme-neon .recap-work b { color: #fff; }
+.recap-theme-neon .recap-tag { border: 0; background: #c8ff3d; color: #0e0b1a; }
+
+/* 레트로 */
+.recap-theme-retro { background: #f4ead7; color: #17172b; }
+.recap-theme-retro::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 36px;
+  background: repeating-conic-gradient(#17172b 0% 25%, #f4ead7 0% 50%) 0 0 / 36px 36px;
+}
+.recap-theme-retro .recap-glow-a { display: none; }
+.recap-theme-retro .recap-glow-b { right: -50px; top: 70px; width: 190px; height: 190px; background: #ff5a36; }
+.recap-theme-retro .recap-spark { display: none; }
+.recap-theme-retro .recap-pill { border: 0; background: #17172b; color: #f4ead7; }
+.recap-theme-retro .recap-nick { color: #2438ff; }
+.recap-theme-retro .recap-nick span {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 0 10px;
+  background: #ff5a36;
+  color: #fffdf6;
+  transform: rotate(-2deg);
+}
+.recap-theme-retro .recap-summary { color: #17172b; }
+.recap-theme-retro .recap-work { border: 2.5px solid #17172b; border-radius: 6px; background: #fffdf6; box-shadow: none; }
+.recap-theme-retro .recap-tag { border: 0; border-radius: 4px; background: #2438ff; color: #fff; }
+
+/* 스티커 */
+.recap-theme-sticker {
+  background: radial-gradient(#ffc2dc 2px, transparent 2.5px) 0 0 / 18px 18px, #fff0f7;
+  color: #1d1d1d;
+}
+.recap-theme-sticker .recap-glow { display: none; }
+.recap-theme-sticker .recap-spark { fill: #ffe14d; stroke: #1d1d1d; stroke-width: 1.6; }
+.recap-theme-sticker .recap-spark-lg { width: 44px; height: 44px; }
+.recap-theme-sticker .recap-spark-sm { width: 22px; height: 22px; fill: #7fe3c4; }
+.recap-theme-sticker .recap-pill { border-width: 3px; border-color: #1d1d1d; transform: rotate(-3deg); }
+.recap-theme-sticker .recap-nick {
+  color: #ff3d8b;
+  text-shadow: 3px 3px 0 #1d1d1d, -1px -1px 0 #1d1d1d, 1px -1px 0 #1d1d1d, -1px 1px 0 #1d1d1d;
+}
+.recap-theme-sticker .recap-nick span { background: none; }
+.recap-theme-sticker .recap-summary { color: #1d1d1d; }
+.recap-theme-sticker .recap-work {
+  align-self: flex-start;
+  padding: 9px 18px;
+  border: 3px solid #1d1d1d;
+  border-radius: 99px;
+  box-shadow: 0 4px 0 #1d1d1d;
+}
+.recap-theme-sticker .recap-work:nth-child(1) { background: #ffe14d; }
+.recap-theme-sticker .recap-work:nth-child(2) { background: #7fe3c4; }
+.recap-theme-sticker .recap-work:nth-child(3) { background: #ffa8d2; }
+.recap-theme-sticker .recap-tag { padding: 0; border: 0; background: none; font-size: 11px; }
+
+/* ---- 디자인 고르기 버튼 ---- */
+.recap-themes { display: flex; justify-content: center; gap: 6px; margin: 0 0 16px; }
+.recap-themes button {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 6px;
+  border: 1px solid #dfd8cc;
+  border-radius: 99px;
+  background: #fcf9f2;
+  color: #59584f;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.recap-themes button[aria-pressed='true'] { border-color: #34332e; background: #34332e; color: #fcf9f2; }
+.recap-swatch { flex: none; width: 16px; height: 16px; border: 1px solid rgba(0, 0, 0, 0.25); border-radius: 50%; }
+.recap-swatch-pastel { background: linear-gradient(135deg, #ffd3e6, #dcd3ff 55%, #c4eeff); }
+.recap-swatch-neon { background: radial-gradient(circle at 30% 30%, #c8ff3d 0 25%, #0e0b1a 30%); }
+.recap-swatch-retro { background: linear-gradient(135deg, #f4ead7 50%, #ff5a36 50%); }
+.recap-swatch-sticker { background: radial-gradient(#ff3d8b 2px, #fff0f7 2.5px) 0 0 / 6px 6px; }
