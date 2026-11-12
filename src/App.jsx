@@ -13,6 +13,7 @@ import WorkDetail from "./pages/work-detail/WorkDetail";
 import Share from "./pages/share/Share";
 import Stats from "./pages/stats/Stats";
 import ArchiveBridgeProvider from "./pages/b-shared/ArchiveBridgeProvider";
+import EmptyHome from "./pages/home/EmptyHome";
 
 function AppContent() {
   return (
@@ -21,6 +22,9 @@ function AppContent() {
         <Routes>
           {/* 홈 */}
           <Route path="/" element={<Home />} />
+
+          {/* 초기 화면 미리보기 */}
+          <Route path="/preview/empty" element={<EmptyHome />} />
 
           {/* 작품 등록·감상 작성·수정 */}
           <Route path="/works/new" element={<WorkCreate />} />

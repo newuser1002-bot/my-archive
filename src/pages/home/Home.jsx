@@ -119,6 +119,17 @@ export default function Home() {
                         })}
                     </div>
                 </section>
+
+                {/* 홈 화면 하단 작품 기록 버튼 */}
+                <div className="home-work-record-add">
+                        <Link to="/works/new"> 🞢 새 작품 기록하기</Link>
+                </div>
+
+                
+                
+
+
+
             </div>
         </main>
     );
