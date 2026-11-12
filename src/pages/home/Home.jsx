@@ -5,11 +5,15 @@ import "./Home.css";    // 홈 화면 전용 CSS 불러오기
 import logo from "../../assets/logo.png";
 import { CATEGORIES } from "../b-shared/recordModel";   //공통 콘텐츠 유형 목록 가져오기
 import RecordIcon from "../b-shared/RecordIcon";
+import {useState} from "react"; // 선택값을 기억하는 React 기능
 
 export default function Home() {
 
     // 공통 데이터에서 작품 목록과 감상 기록 목록 가져오기
     const { works, reviews } = useBArchive();
+    
+    // 현재 선택한 카테고리 처음에는 전체("all") | selectedCategory는 현재 선택값, set~는 선택값을 바꾸는 함수
+    const [selectedCategory, setSelectedCategory] = useState("all"); // useState("all") 처음 선택값을 all로 설정한다.
 
     // 작품중에서 별점이 있는 기록만 고른다.
     const ratedReviews = reviews.filter((review) => review.rating !== null);
@@ -19,6 +23,9 @@ export default function Home() {
 
     // 평균 별점을 구한다.
     const averageRating = ratedReviews.length === 0 ? "별점을 매겨주세요" : (totalRating / ratedReviews.length).toFixed(1);
+
+    // 전체 선택이면 모든 작품, 그 외에는 선택 유형의 작품
+    const filteredWorks = selectedCategory === "all" ? works : works.filter((work) => work.category === selectedCategory);
 
     return (
         <main className="home-page">
@@ -74,23 +81,30 @@ export default function Home() {
                     {/* 제목과 전체 작품 수 */}
                     <div className="home-works-header">
                         <h2>나의 작품</h2>
-                        <span>총 {works.length}개</span>
-                    </div>
+                        <span>총 {filteredWorks.length}개</span>
+                    </div> 
 
                     {/* 작품 카테고리 */}
                     <div className="home-works-filters">
                         {/* 전체는 콘텐츠 유형이 아니라 따로 표시 */}
-                        <button type="button">전체</button>
+                        <button type="button"
+                                className={selectedCategory === "all" ? "is-active" : ""} // 선택값이 all 이면 is-activate 클래스 적용
+                                onClick={() => setSelectedCategory("all")}
+                        >전체</button>
 
                         {/* 공통 유형 목록으로 버튼 생성 */}
                         {CATEGORIES.map((category) => (
-                            <button type="button" key={category.value}>{category.label}</button>
+                            <button type="button" 
+                                    key={category.value}
+                                    className={selectedCategory === category.value ? "is-active" : ""}
+                                    onClick={() => setSelectedCategory(category.value)}
+                            >{category.label}</button>
                         ))}
                     </div>
 
                     {/* 작품 카드 목록 */}
                     <div className="home-work-grid">
-                        {works.map((work) => {
+                        {filteredWorks.map((work) => {
                             const category = CATEGORIES.find((item) => item.value === work.category);
 
                             return (

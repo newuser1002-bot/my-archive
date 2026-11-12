@@ -171,6 +171,12 @@
     box-shadow: 0 12px 40px rgba(67, 59, 47, 0.18);
 }
 
+/* 선택된 필터 버튼의 색상 */
+.home-works-filters button.is-active {
+    background-color: #6e735a;
+    color: white;
+}
+
 /* 작품 목록을 같은 너비의 2열로 배치 */
 /* 부모 grid가 가로 공간을 두 칸으로 나눠서 카드 너비를 정해준다. */
 .home-work-grid {
