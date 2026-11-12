@@ -285,3 +285,14 @@
     text-decoration: none;
     color: white;
 }
+
+.home-preview-empty {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.home-preview-empty a {
+    color: #7c8289;
+    text-underline-offset: 10px;
+}

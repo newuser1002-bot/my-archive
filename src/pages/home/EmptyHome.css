@@ -1,0 +1,29 @@
+.home-preview-image {
+    margin-top: 60px;
+    display: block; /* 요소를 한 줄의 독립된 상자처럼 배치한다. */
+    width: 250px;
+    max-width: 100%; /* 작은 화면에서 넘치지 않도록 */
+    height: auto;
+    margin-inline: auto; /* 남는 좌우 여백을 똑같이 배분 */
+}
+
+.home-first-work-record-add {
+    margin-top: 30px;
+    display: flex;  /* 가로 배치 */
+    align-items: center;
+    justify-content: center;
+    padding: 20px 20px;
+    border-radius: 16px;
+
+    background-color: #6e735a;
+    /* 좌우 이동 없음, 아래로 이동, 부드럽게 퍼지는 정도 | rgba 투명도 지정 0.36 */
+    box-shadow: 0 12px 40px rgba(67, 59, 47, 0.36);
+    
+    font-size: 20px;
+    
+}
+
+.home-first-work-record-add a {
+    text-decoration: none;
+    color: white;
+}

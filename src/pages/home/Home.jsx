@@ -102,7 +102,7 @@ export default function Home() {
                                         {/* 유형 정보가 있으면 아이콘과 이름 표시 */}
                                         {category && (
                                             <span className="home-work-badge">
-                                                <RecordIcon name={category.icon} size={15}/>
+                                                <RecordIcon name={category.icon} size={15} />
                                                 {category.label}
                                             </span>
                                         )}
@@ -122,11 +122,14 @@ export default function Home() {
 
                 {/* 홈 화면 하단 작품 기록 버튼 */}
                 <div className="home-work-record-add">
-                        <Link to="/works/new"> 🞢 새 작품 기록하기</Link>
+                    <Link to="/works/new"> 🞢 새 작품 기록하기</Link>
                 </div>
 
-                
-                
+
+                {/* 초기 화면 미리보기 */}
+                <div className="home-preview-empty">
+                    <Link to="/preview/empty">초기 화면 미리보기</Link>
+                </div>
 
 
 
