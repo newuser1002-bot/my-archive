@@ -6,6 +6,7 @@ import { useBArchive } from '../b-shared/archiveContext';
 import RecordIcon from '../b-shared/RecordIcon';
 import Card from '../../components/Card';
 import StarRating from '../../components/StarRating';
+import RecapSection from './RecapSection';
 import { PERIODS, calcMonthly, calcStats, filterByPeriod } from './statsModel';
 import './Stats.css';
 
@@ -148,6 +149,9 @@ export default function Stats() {
           )}
         </>
       )}
+
+      {/* 월간 결산은 위에서 고른 기간과 상관없이 항상 맨 아래에 보여준다. */}
+      <RecapSection works={works} reviews={reviews} now={now} />
     </main>
   );
 }
