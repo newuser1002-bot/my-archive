@@ -92,6 +92,13 @@ export function createArchiveBridge({ getStorage, makeId = prefix => `${prefix}-
         throw new Error('다른 탭에서 이 기록이 변경됐어요. 입력 내용은 유지됩니다. 작성 내용을 따로 보관한 뒤 최신 기록을 다시 열어 비교해 주세요.');
       }
       next[rowsKey] = raw[rowsKey].map(item => String(item.id) === idOrWork ? { ...item, ...reviewToWire(draft, legacy), id: item.id, workId: item.workId } : item);
+    } else if (kind === 'delete') {
+      const previous = reviews.find(item => item.id === idOrWork);
+      if (!previous) throw new Error('이미 삭제됐거나 찾을 수 없는 기록이에요.');
+      if (Object.keys(previous).some(key => previous[key] !== expectedReview[key])) {
+        throw new Error('기록이 변경됐어요. 최신 내용을 확인한 뒤 다시 삭제해 주세요.');
+      }
+      next[rowsKey] = raw[rowsKey].filter(item => String(item.id) !== idOrWork);
     } else throw new Error('알 수 없는 저장 요청이에요.');
     const checked = decodeArchive(next);
     try { storage.setItem(ARCHIVE_KEY, JSON.stringify(next)); }
@@ -105,6 +112,7 @@ export function createArchiveBridge({ getStorage, makeId = prefix => `${prefix}-
     getSnapshot: () => snapshot,
     subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
     refresh,
+    deleteReview: review => write('delete', review.id, undefined, review),
     createWorkWithReview: (work, review) => write('create', work, review),
     addReview: (workId, review) => write('add', workId, review),
     updateReview: (reviewId, review, expectedReview) => write('update', reviewId, review, expectedReview),
