@@ -11,5 +11,5 @@ export default function ArchiveBridgeProvider({ children }) {
     window.addEventListener('storage', onStorage);
     return () => { unsubscribe(); window.removeEventListener('storage', onStorage); };
   }, [bridge]);
-  return <BArchiveContext.Provider value={{ ...snapshot, createWorkWithReview: bridge.createWorkWithReview, addReview: bridge.addReview, updateReview: bridge.updateReview, refresh: bridge.refresh }}>{children}</BArchiveContext.Provider>;
+  return <BArchiveContext.Provider value={{ ...snapshot, createWorkWithReview: bridge.createWorkWithReview, addReview: bridge.addReview, updateReview: bridge.updateReview, deleteReview: bridge.deleteReview, refresh: bridge.refresh }}>{children}</BArchiveContext.Provider>;
 }
