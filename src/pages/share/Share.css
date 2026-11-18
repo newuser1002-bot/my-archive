@@ -1,0 +1,17 @@
+.c-share-card {
+  background: #e6ebdf;
+  border: 1px solid #cbd5c6;
+  border-radius: 12px;
+  padding: 26px 22px;
+  font-family: "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+}
+
+.c-share-card header { padding-bottom: 23px; border-bottom: 1px solid #becbb9; }
+.c-share-brand { margin: 0 0 28px; color: #4e5e4c; font-weight: 700; }
+.c-share-card h2 { margin-top: 8px; font-size: clamp(26px, 8vw, 38px); }
+.c-share-card dl { display: flex; flex-wrap: wrap; gap: 16px 28px; margin: 20px 0 0; }
+.c-share-card dt { margin-bottom: 7px; font-size: 14px; color: #4e5e4c; }
+.c-share-card dd { margin: 0; font-weight: 700; }
+.c-share-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.c-share-actions button { flex: 1; }
+.c-share-link { margin-top: 12px; width: 100%; padding: 8px; border: 1px solid #abb6a4; }
