@@ -132,3 +132,15 @@
 
 .stats-message { margin: 0 20px; padding: 24px 20px; text-align: center; color: #7c786e; font-size: 13px; line-height: 1.7; }
 .stats-link { color: #74735f; font-weight: 700; }
+
+.stats-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-bottom: 8px;
+  color: #59584f;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.stats-back:hover { color: #34332e; }
