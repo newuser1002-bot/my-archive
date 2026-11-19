@@ -13,6 +13,7 @@ import './Stats.css';
 function Intro() {
   return (
     <section className="stats-intro">
+      <Link to="/" className="stats-back">← 홈으로</Link>
       <span className="eyebrow">MY ARCHIVE IN NUMBERS</span>
       <h1 className="title-font">차곡차곡 쌓인<br />나만의 취향</h1>
       <p>기록해 온 시간 속에서 나의 감상을 발견해 보세요.</p>
